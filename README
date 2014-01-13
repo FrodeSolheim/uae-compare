@@ -1,0 +1,29 @@
+uae-compare is a small utility to compare different UAE projects. The utility
+supports comparing FS-UAE, WinUAE and PUAE (adding support for other
+projects is trivial).
+
+uae-compare normalizes file names between the different UAE, and also
+processes the source code files with a code cleanup tool - in order to
+remove insigificant differences such as white space or slightly different
+code formatting.
+
+Requirements:
+- python
+- astyle
+
+Optional:
+- meld diff viewer (nice viewer with support for three-way compares)
+
+Just run "make" to start processing. The directories "WinUAE", "FS-UAE",
+and "PUAE" must exist alongside this directory. The processed files will
+be stored in WinUAE, FS-UAE and PUAE within this directory.
+
+To open a three-way compare in meld for the source file newcpu.c, run:
+
+./compare newcpu.c
+
+You can also just run your favorite diff viewer manually, perhaps in even
+directory diff mode.
+
+Of course, it only makes sense to compare common files, so many files
+specific to different UAE flavors are not included in the comparison

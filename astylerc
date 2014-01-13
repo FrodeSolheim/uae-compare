@@ -1,0 +1,7 @@
+--pad-paren-out
+--pad-header
+--unpad-paren
+-y
+--convert-tabs
+--indent=spaces=4
+--lineend=linux

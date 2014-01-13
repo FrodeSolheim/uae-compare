@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+
+import os
+import sys
+
+args = ["meld"]
+for project in ["WinUAE", "fs-uae", "PUAE"]:
+    path = os.path.join(project, sys.argv[1])
+    if os.path.exists(path):
+        args.append(path)
+if len(args) >= 3:
+    os.system(" ".join(args))
+else:
+    print(args)
+    print("no files to compare")
