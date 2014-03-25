@@ -3,8 +3,21 @@
 import os
 import sys
 
+projects = []
+if "--winuae" in sys.argv:
+    projects.append("WinUAE")
+    sys.argv.remove("--winuae")
+if "--fs-uae" in sys.argv:
+    projects.append("fs-uae")
+    sys.argv.remove("--fs-uae")
+if "--puae" in sys.argv:
+    projects.append("PUAE")
+    sys.argv.remove("--puae")
+if not projects:
+    projects = ["WinUAE", "fs-uae", "PUAE"]
+
 args = ["meld"]
-for project in ["WinUAE", "fs-uae", "PUAE"]:
+for project in projects:
     path = os.path.join(project, sys.argv[1])
     if os.path.exists(path):
         args.append(path)

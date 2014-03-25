@@ -26,4 +26,4 @@ You can also just run your favorite diff viewer manually, perhaps in even
 directory diff mode.
 
 Of course, it only makes sense to compare common files, so many files
-specific to different UAE flavors are not included in the comparison
+specific to different UAE flavors are not included in the comparison.

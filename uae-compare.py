@@ -26,6 +26,7 @@ def fix_file(path):
     if options["no-blank-lines"]:
         while "\n\n" in data:
             data = data.replace("\n\n", "\n")
+    data = data.replace("_T (\"", "_T(\"")
     data = data.strip() + "\n"
     with open(path, "wb") as f:
         f.write(data)
@@ -41,6 +42,12 @@ def format_project(project, src_dir, dst_dir):
         if not os.path.exists(os.path.dirname(dst_path)):
             os.makedirs(os.path.dirname(dst_path))
         shutil.copy(src_path, dst_path)
+        # hack for auto-complete in shell
+        if os.path.dirname(dst_name):
+            if not os.path.exists(os.path.dirname(dst_name)):
+                os.makedirs(os.path.dirname(dst_name))
+        with open(dst_name, "wb") as f:
+            pass
 
     for dir_path, dir_names, file_names in os.walk(dst_dir):
         for name in file_names:
@@ -150,6 +157,7 @@ source_files = [
     "scsi.cpp",
     "scsidev.cpp",
     "scsiemul.cpp",
+    "scp.cpp",
     "serial.cpp",
     "sinctable.cpp",
     "specialmonitors.cpp",
@@ -201,6 +209,9 @@ file_map = {
     "od-fs/ahidsound.cpp": "od/ahidsound_new.c",
     "od-fs/ahidsound.h": "od/ahidsound.h",
     "od-fs/ahidsound_new.h": "od/ahidsound_new.h",
+    "od-fs/caps.cpp": "od/caps.c",
+    "od-fs/caps.h": "od/caps.h",
+    "od-fs/CapsAPI.h": "od/CapsAPI.h",
     "od-fs/mman.cpp": "od/mman.c",
     "od-fs/parser.cpp": "od/parser.c",
     "od-fs/picasso96.cpp": "od/picasso96.c",
@@ -211,6 +222,9 @@ file_map = {
     "od-win32/ahidsound.h": "od/ahidsound.h",
     "od-win32/ahidsound_new.cpp": "od/ahidsound_new.c",
     "od-win32/ahidsound_new.h": "od/ahidsound_new.h",
+    "od-win32/caps/caps_win32.cpp": "od/caps.c",
+    "od-win32/caps/caps_win32.h": "od/caps.h",
+    "od-win32/caps/CapsAPI.h": "od/CapsAPI.h",
     "od-win32/mman.cpp": "od/mman.c",
     "od-win32/parser.cpp": "od/parser.c",
     "od-win32/picasso96_win.cpp": "od/picasso96.c",
@@ -218,8 +232,9 @@ file_map = {
 }
 
 for name in source_files:
-    file_map[name] = name[:-2]
-    file_map[name[:-2]] = name[:-2]
+    if name.endswith(".cpp"):
+        file_map[name] = name[:-2]
+        file_map[name[:-2]] = name[:-2]
 
 uae_header_files = [
     "a2065.h",
@@ -294,6 +309,7 @@ uae_header_files = [
     "sampler.h",
     "sana2.h",
     "savestate.h",
+    "scp.h",
     "scsidev.h",
     "scsi.h",
     "serial.h",
