@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from __future__ import print_function
 
@@ -6,7 +6,7 @@ import os
 import sys
 import shutil
 
-with open(sys.argv[1], "rb") as f:
+with open(sys.argv[1], "r", encoding="ISO-8859-1") as f:
     data = f.read()
 
 lines = []
@@ -48,5 +48,5 @@ for line in data.split("\n"):
     lines.append(line)
 
 data = "\n".join(lines)
-with open(sys.argv[1], "wb") as f:
+with open(sys.argv[1], "w", encoding="ISO-8859-1") as f:
     f.write(data)
