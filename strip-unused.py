@@ -12,39 +12,39 @@ with open(sys.argv[1], "r", encoding="ISO-8859-1") as f:
 lines = []
 for line in data.split("\n"):
     for tag in ["UNUSED", "UNUSED_FUNCTION"]:
-        #search_from = 0
-        #altered = 1
-        #while altered:
+        # search_from = 0
+        # altered = 1
+        # while altered:
         #    altered = 0
         pos = -1
         while True:
-        #while pos >= 0:
+            # while pos >= 0:
             tagp = tag + "("
-            #pos = line.find(tag, search_from)
+            # pos = line.find(tag, search_from)
             pos = line.find(tagp, pos + 1)
             if pos < 0:
                 break
-            #search_from = pos + 1
-            #altered = 1
+            # search_from = pos + 1
+            # altered = 1
             # avoid "fixing" other defined ending with UNUSED
-            if line[pos-1] not in ", *":
-                print("ignoring", repr(line[pos-1]))
+            if line[pos - 1] not in ", *":
+                print("ignoring", repr(line[pos - 1]))
                 continue
-            remain = line[pos+len(tagp):]
+            remain = line[pos + len(tagp) :]
             line = line[:pos]
             level = 1
             for c in remain:
-                #if c == "(" and level:
+                # if c == "(" and level:
                 #    level += 1
-                #elif c == ")" and level:
+                # elif c == ")" and level:
                 #    level -= 1
-                #elif level == 0:
+                # elif level == 0:
                 if c == ")" and level:
                     level -= 1
                     continue
                 line += c
-        #assert tagp not in line
-    #assert "UNUSED(" not in line
+        # assert tagp not in line
+    # assert "UNUSED(" not in line
     lines.append(line)
 
 data = "\n".join(lines)

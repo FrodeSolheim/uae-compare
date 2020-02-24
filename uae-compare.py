@@ -2,7 +2,8 @@
 from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
-#from __future__ import unicode_literals
+
+# from __future__ import unicode_literals
 
 import os
 import sys
@@ -11,22 +12,27 @@ import subprocess
 from projects import projects
 
 indenter = "astyle"
+# indenter = "clang-format"
 
 
 def fix_file(path):
     with open(path, "rb") as f:
         data = f.read()
     for header_file in uae_header_files:
-        #print('#include "{0}"'.format(header_file))
+        # print('#include "{0}"'.format(header_file))
         n, e = os.path.splitext(header_file)
-        data = data.replace('include "{0}"'.format(header_file),
-                            'include "uae/{0}"'.format(header_file))
-        data = data.replace('include "{0}_uae.h"'.format(n),
-                            'include "uae/{0}"'.format(header_file))
+        data = data.replace(
+            'include "{0}"'.format(header_file),
+            'include "uae/{0}"'.format(header_file),
+        )
+        data = data.replace(
+            'include "{0}_uae.h"'.format(n),
+            'include "uae/{0}"'.format(header_file),
+        )
     if options["no-blank-lines"]:
         while "\n\n" in data:
             data = data.replace("\n\n", "\n")
-    data = data.replace("_T (\"", "_T(\"")
+    data = data.replace('_T ("', '_T("')
     data = data.strip() + "\n"
     with open(path, "wb") as f:
         f.write(data)
@@ -36,7 +42,7 @@ def format_project(project, src_dir, dst_dir):
     for src_name, dst_name in file_map.items():
         src_path = os.path.join(src_dir, src_name)
         dst_path = os.path.join(dst_dir, dst_name)
-        #print((src_path), os.path.exists(src_path))
+        # print((src_path), os.path.exists(src_path))
         if not os.path.exists(src_path):
             continue
         if not os.path.exists(os.path.dirname(dst_path)):
@@ -59,7 +65,9 @@ def format_project(project, src_dir, dst_dir):
                         args.insert(1, "--delete-empty-lines")
                 elif indenter == "uncrustify":
                     args = ["uncrustify", "-c", "uncrustify.cfg", path]
-                #print(args)
+                elif indenter == "clang-format":
+                    args = ["clang-format", "-i", path]
+                print(args)
                 assert subprocess.Popen(args).wait() == 0
                 if os.path.exists(path + ".orig"):
                     os.remove(path + ".orig")
@@ -188,7 +196,6 @@ file_map = {
     "jit/compemu_support_codegen.cpp": "jit/compemu_support_codegen.c",
     "jit/compemu_support.cpp": "jit/compemu_support.c",
     "jit/gencomp.cpp": "jit/gencomp.c",
-
     # PUAE JIT files
     "codegen_x86.c": "jit/codegen_x86.c",
     "codegen_x86.h": "jit/codegen_x86.h",
@@ -200,11 +207,9 @@ file_map = {
     "compemu_support_codegen.c": "jit/compemu_support_codegen.c",
     "compemu_support.c": "jit/compemu_support.c",
     "gencomp.c": "jit/gencomp.c",
-
     # PUAE files
     "picasso96.c": "od/picasso96.c",
     "include/memory_uae.h": "include/memory.h",
-
     # FS-UAE files
     "od-fs/ahidsound.cpp": "od/ahidsound_new.c",
     "od-fs/ahidsound.h": "od/ahidsound.h",
@@ -217,7 +222,6 @@ file_map = {
     "od-fs/picasso96.cpp": "od/picasso96.c",
     "od-fs/picasso96_host.h": "od/picasso96.h",
     "include/uae/memory.h": "include/memory.h",
-
     # WinUAE files
     "od-win32/ahidsound.h": "od/ahidsound.h",
     "od-win32/ahidsound_new.cpp": "od/ahidsound_new.c",
@@ -229,6 +233,35 @@ file_map = {
     "od-win32/parser.cpp": "od/parser.c",
     "od-win32/picasso96_win.cpp": "od/picasso96.c",
     "od-win32/picasso96_win.h": "od/picasso96.h",
+    # ARAnyM
+    "compiler/codegen_arm.cpp": "jit/codegen_arm.c",
+    "compiler/codegen_arm.h": "jit/codegen_arm.h",
+    "compiler/codegen_x86.cpp": "jit/codegen_x86.c",
+    "compiler/codegen_x86.h": "jit/codegen_x86.h",
+    "compiler/compemu1.cpp": "jit/compemu1.c",
+    "compiler/compemu2.cpp": "jit/compemu2.c",
+    "compiler/compemu3.cpp": "jit/compemu3.c",
+    "compiler/compemu4.cpp": "jit/compemu4.c",
+    "compiler/compemu5.cpp": "jit/compemu5.c",
+    "compiler/compemu6.cpp": "jit/compemu6.c",
+    "compiler/compemu7.cpp": "jit/compemu7.c",
+    "compiler/compemu8.cpp": "jit/compemu8.c",
+    "compiler/compemu_fpp.cpp": "jit/compemu_fpp.c",
+    "compiler/compemu.h": "jit/compemu.h",
+    "compiler/compemu_midfunc_arm2.cpp": "jit/compemu_midfunc_arm2.c",
+    "compiler/compemu_midfunc_arm2.h": "jit/compemu_midfunc_arm2.h",
+    "compiler/compemu_midfunc_arm.cpp": "jit/compemu_midfunc_arm.c",
+    "compiler/compemu_midfunc_arm.h": "jit/compemu_midfunc_arm.h",
+    "compiler/compemu_midfunc_x86.cpp": "jit/compemu_midfunc_x86.c",
+    "compiler/compemu_midfunc_x86.h": "jit/compemu_midfunc_x86.h",
+    "compiler/compemu_support.cpp": "jit/compemu_support.c",
+    "compiler/compstbla.cpp": "jit/compstbla.c",
+    "compiler/flags_arm.h": "jit/flags_arm.h",
+    "compiler/flags_x86.h": "jit/flags_x86.h",
+    "compiler/gencomp_arm.c": "jit/gencomp_arm.c",
+    "compiler/gencomp.c": "jit/gencomp.c",
+    "compiler/test_codegen_arm.c": "jit/test_codegen_arm.c",
+    "compiler/test_codegen_x86.cpp": "jit/test_codegen_x86.c",
 }
 
 for name in source_files:
@@ -329,13 +362,12 @@ uae_header_files = [
 for name in uae_header_files:
     file_map["include/" + name] = "include/" + name
 
-options = {
-    "no-blank-lines": "--no-blank-lines" in sys.argv,
-}
+options = {"no-blank-lines": "--no-blank-lines" in sys.argv}
 
 for project, src_dir in projects.items():
-    if not os.path.exists(src_dir) and \
-            os.path.exists(os.path.join("..", src_dir)):
+    if not os.path.exists(src_dir) and os.path.exists(
+        os.path.join("..", src_dir)
+    ):
         old_src_dir = src_dir
         src_dir = os.path.join("..", src_dir)
         print("using", src_dir, "instead of", old_src_dir)

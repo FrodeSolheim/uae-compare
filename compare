@@ -4,17 +4,23 @@ import os
 import sys
 
 projects = []
-if "--winuae" in sys.argv:
-    projects.append("WinUAE")
-    sys.argv.remove("--winuae")
+if "--amiberry" in sys.argv:
+    projects.append("amiberry")
+    sys.argv.remove("--amiberry")
+if "--aranym" in sys.argv:
+    projects.append("aranym")
+    sys.argv.remove("--aranym")
 if "--fs-uae" in sys.argv:
     projects.append("fs-uae")
     sys.argv.remove("--fs-uae")
 if "--puae" in sys.argv:
     projects.append("PUAE")
     sys.argv.remove("--puae")
+if "--winuae" in sys.argv:
+    projects.append("WinUAE")
+    sys.argv.remove("--winuae")
 if not projects:
-    projects = ["WinUAE", "fs-uae", "PUAE"]
+    projects = ["WinUAE", "fs-uae", "amiberry"]
 
 args = ["meld"]
 for project in projects:
